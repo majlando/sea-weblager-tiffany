@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import dk.easv.weblager.gui.control.SvgIcon?>
+
+<VBox spacing="16" styleClass="root-pane"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="dk.easv.weblager.gui.AdminDashboardController">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+    <HBox alignment="CENTER_LEFT" spacing="12">
+        <Label styleClass="h1" text="Admin Dashboard"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label styleClass="body-muted" text="Welcome"/>
+        <Button styleClass="secondary-button" text="Logout" contentDisplay="LEFT" graphicTextGap="8">
+            <graphic>
+                <SvgIcon iconLiteral="sign-out" iconSize="14"/>
+            </graphic>
+        </Button>
+    </HBox>
+</VBox>
