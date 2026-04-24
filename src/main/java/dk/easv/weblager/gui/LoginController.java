@@ -3,11 +3,13 @@ package dk.easv.weblager.gui;
 import dk.easv.weblager.be.Role;
 import dk.easv.weblager.be.User;
 import dk.easv.weblager.bll.UserManager;
+import dk.easv.weblager.gui.control.BrandLogo;
 import dk.easv.weblager.util.SceneSwitcher;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.util.Optional;
@@ -20,11 +22,17 @@ import java.util.Optional;
  */
 public class LoginController {
 
+    @FXML private Pane logoContainer;
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private Label errorLabel;
 
     private final UserManager userManager = new UserManager();
+
+    @FXML
+    private void initialize() {
+        logoContainer.getChildren().setAll(BrandLogo.create(Stylesheets.LOGIN_LOGO_WIDTH));
+    }
 
     @FXML
     private void onLogin() throws Exception {
