@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="10.0"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="dk.easv.weblager.gui.LoginController">
+
+    <padding><Insets bottom="20" left="20" right="20" top="20"/></padding>
+
+    <Label text="Login" style="-fx-font-size: 18;"/>
+
+    <TextField     fx:id="usernameField" promptText="Username"/>
+    <PasswordField fx:id="passwordField" promptText="Password"/>
+
+    <Button text="Login" defaultButton="true" onAction="#onLogin"/>
+
+    <Label fx:id="errorLabel" style="-fx-text-fill: red;"/>
+</VBox>
