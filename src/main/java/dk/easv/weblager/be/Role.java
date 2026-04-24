@@ -5,5 +5,13 @@ package dk.easv.weblager.be;
  */
 public enum Role {
     ADMIN,
-    OPERATOR
+    OPERATOR;
+
+    /** Human-readable name used in labels and table cells. */
+    public String display() {
+        return switch (this) {
+            case ADMIN    -> "Admin";
+            case OPERATOR -> "Operator";
+        };
+    }
 }

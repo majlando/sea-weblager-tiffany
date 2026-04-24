@@ -28,6 +28,10 @@ public final class SceneSwitcher {
         } else {
             scene.setRoot(root);
         }
+        // Resize the stage to each view's preferred size — otherwise a small
+        // login window would squash the larger admin dashboard, and vice versa.
+        stage.sizeToScene();
+        stage.centerOnScreen();
         return loader;
     }
 }

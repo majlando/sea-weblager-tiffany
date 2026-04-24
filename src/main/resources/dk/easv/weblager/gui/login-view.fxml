@@ -12,7 +12,8 @@
 <?import dk.easv.weblager.gui.control.SvgIcon?>
 
 <!-- rootPane sits in the center of the window; the inner VBox is the login card. -->
-<StackPane styleClass="root-pane"
+<StackPane prefWidth="460" prefHeight="560" minWidth="380" minHeight="520"
+           styleClass="root-pane"
            xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="dk.easv.weblager.gui.LoginController">
 

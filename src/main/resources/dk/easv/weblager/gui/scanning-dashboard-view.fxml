@@ -8,7 +8,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import dk.easv.weblager.gui.control.SvgIcon?>
 
-<VBox spacing="16" styleClass="root-pane"
+<VBox prefWidth="900" prefHeight="600" minWidth="700" minHeight="480"
+      spacing="16" styleClass="root-pane"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="dk.easv.weblager.gui.ScanningDashboardController">
     <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>

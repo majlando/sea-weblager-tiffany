@@ -27,7 +27,7 @@ public class LoginController {
     @FXML private PasswordField passwordField;
     @FXML private Label errorLabel;
 
-    private final UserManager userManager = new UserManager();
+    private final UserManager userManager = AppContext.get().userManager();
 
     @FXML
     private void initialize() {
@@ -45,7 +45,9 @@ public class LoginController {
             return;
         }
 
-        goToDashboard(result.get());
+        User user = result.get();
+        AppContext.get().setCurrentUser(user);
+        goToDashboard(user);
     }
 
     private void goToDashboard(User user) throws Exception {

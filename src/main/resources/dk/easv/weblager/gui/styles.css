@@ -178,3 +178,78 @@
     -fx-padding: 0;
 }
 .link:hover { -fx-underline: true; }
+
+/* --------------------------------------------------------------------------
+   App header — top bar on dashboards
+   -------------------------------------------------------------------------- */
+.app-header {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* --------------------------------------------------------------------------
+   Feedback label — green = success
+   -------------------------------------------------------------------------- */
+.success-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: #2A7F42;
+}
+
+/* --------------------------------------------------------------------------
+   TableView — zebra rows, rounded, primary-colored selection
+   -------------------------------------------------------------------------- */
+.table-view {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border;
+    -fx-border-width: 1;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: -color-surface-muted;
+    -fx-background-radius: 6 6 0 0;
+}
+
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent -color-border transparent transparent;
+    -fx-border-width: 0 1 0 0;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: -color-text;
+    -fx-font-family: "Montserrat Medium", "Montserrat", sans-serif;
+    -fx-font-size: 12px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 0 8 0 8;
+}
+
+.table-view .table-row-cell         { -fx-background-color: -color-surface; }
+.table-view .table-row-cell:odd     { -fx-background-color: -color-surface-muted; }
+.table-view .table-row-cell:selected {
+    -fx-background-color: -color-primary;
+    -fx-text-fill: -color-on-brand;
+}
+.table-view .table-row-cell:selected .text { -fx-fill: -color-on-brand; }
+
+/* --------------------------------------------------------------------------
+   ComboBox — matches the input-wrapper look
+   -------------------------------------------------------------------------- */
+.combo-box {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border;
+    -fx-border-width: 1;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-pref-height: 32px;
+}
+.combo-box:hover   { -fx-border-color: -color-border-strong; }
+.combo-box:focused { -fx-border-color: -color-primary; }
+.combo-box .list-cell {
+    -fx-text-fill: -color-text;
+    -fx-background-color: transparent;
+    -fx-padding: 0 8 0 8;
+}

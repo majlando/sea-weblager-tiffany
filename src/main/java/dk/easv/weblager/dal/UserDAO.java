@@ -2,6 +2,7 @@ package dk.easv.weblager.dal;
 
 import dk.easv.weblager.be.User;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -13,9 +14,21 @@ import java.util.Optional;
  */
 public interface UserDAO {
 
-    /**
-     * Looks up a user by credentials.
-     * @return the matching user, or empty if username/password is wrong.
-     */
+    /** @return all users currently stored. */
+    List<User> getAllUsers();
+
+    /** @return the matching user, or empty if no user has this username. */
+    Optional<User> findByUsername(String username);
+
+    /** @return the matching user, or empty if username/password is wrong. */
     Optional<User> authenticate(String username, String password);
+
+    /** Inserts the user and assigns an id. Returns the stored user. */
+    User createUser(User user);
+
+    /** Updates the user identified by {@code user.getId()}. Returns the stored user. */
+    User updateUser(User user);
+
+    /** Removes the user identified by {@code user.getId()}. */
+    void deleteUser(User user);
 }
