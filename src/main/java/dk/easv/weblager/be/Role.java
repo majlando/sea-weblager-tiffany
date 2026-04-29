@@ -7,11 +7,10 @@ public enum Role {
     ADMIN,
     OPERATOR;
 
-    /** Human-readable name used in labels and table cells. */
     public String display() {
-        return switch (this) {
-            case ADMIN    -> "Admin";
-            case OPERATOR -> "Operator";
-        };
+        if (this == ADMIN) {
+            return "Admin";
+        }
+        return "Operator";
     }
 }

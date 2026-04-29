@@ -2,77 +2,64 @@ package dk.easv.weblager.gui.control;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.transform.Scale;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
- * Loads the brand logo SVG and returns it as a scaled JavaFX Node.
- * The logo has two colors (white + dark blue), set by the CSS class name
- * inside the SVG (cls-1 / cls-2).
+ * Loads the brand logo from its SVG file and returns it as a
+ * scalable JavaFX node. Because it uses vector shapes (not a
+ * raster image), the logo stays crisp at any screen resolution.
  */
 public final class BrandLogo {
 
     private static final String RESOURCE = "/dk/easv/weblager/gui/assets/images/logo-light.svg";
-
-    private static final Map<String, Color> COLORS = Map.of(
-            "cls-1", Color.WHITE,
-            "cls-2", Color.web("#2D3D4F")
-    );
-
-    private static final Pattern VIEWBOX = Pattern.compile("viewBox=\"\\s*\\S+\\s+\\S+\\s+(\\S+)");
-    private static final Pattern PATH    = Pattern.compile("<path\\b[^>]*\\bclass=\"([^\"]+)\"[^>]*\\bd=\"([^\"]+)\"");
-    private static final Pattern POLYGON = Pattern.compile("<polygon\\b[^>]*\\bclass=\"([^\"]+)\"[^>]*\\bpoints=\"([^\"]+)\"");
+    private static final Color BRAND = Color.web("#2D3D4F");
+    private static final double SVG_WIDTH = 1660.44;
 
     private BrandLogo() {}
 
+    /** Creates the logo scaled to the given pixel width. */
     public static Node create(double targetWidth) {
-        String svg = readSvg();
-        Group content = new Group();
+        Group logo = new Group();
 
-        Matcher pm = PATH.matcher(svg);
-        while (pm.find()) {
-            SVGPath p = new SVGPath();
-            p.setContent(pm.group(2));
-            p.setFill(COLORS.getOrDefault(pm.group(1), Color.BLACK));
-            content.getChildren().add(p);
-        }
-
-        Matcher pol = POLYGON.matcher(svg);
-        while (pol.find()) {
-            Polygon polygon = new Polygon();
-            for (String token : pol.group(2).trim().split("[\\s,]+")) {
-                if (!token.isEmpty()) polygon.getPoints().add(Double.parseDouble(token));
-            }
-            polygon.setFill(COLORS.getOrDefault(pol.group(1), Color.BLACK));
-            content.getChildren().add(polygon);
-        }
-
-        double scaleFactor = targetWidth / viewBoxWidth(svg);
-        content.getTransforms().add(new Scale(scaleFactor, scaleFactor));
-        return new Group(content);
-    }
-
-    private static String readSvg() {
         try (InputStream in = BrandLogo.class.getResourceAsStream(RESOURCE)) {
-            if (in == null) throw new RuntimeException("Logo resource not found: " + RESOURCE);
-            return new String(in.readAllBytes(), StandardCharsets.UTF_8);
+            Document doc = DocumentBuilderFactory.newInstance()
+                    .newDocumentBuilder().parse(in);
+
+            NodeList paths = doc.getElementsByTagName("path");
+            for (int i = 0; i < paths.getLength(); i++) {
+                Element el = (Element) paths.item(i);
+                SVGPath shape = new SVGPath();
+                shape.setContent(el.getAttribute("d"));
+                shape.setFill("cls-1".equals(el.getAttribute("class"))
+                        ? Color.WHITE : BRAND);
+                logo.getChildren().add(shape);
+            }
         } catch (Exception e) {
-            throw new RuntimeException("Failed to read logo SVG", e);
+            throw new RuntimeException("Failed to load logo SVG", e);
         }
-    }
 
-    private static double viewBoxWidth(String svg) {
-        Matcher m = VIEWBOX.matcher(svg);
-        if (!m.find()) throw new IllegalArgumentException("SVG missing viewBox");
-        return Double.parseDouble(m.group(1));
-    }
+        double scale = targetWidth / SVG_WIDTH;
+        logo.getTransforms().add(new Scale(scale, scale));
 
+        // The Scale transform affects rendering but not layout bounds,
+        // so parent containers (especially HBox) would see the original
+        // ~1660 px width. Wrap in a Pane sized to the visual bounds.
+        double visualWidth  = logo.getBoundsInParent().getWidth();
+        double visualHeight = logo.getBoundsInParent().getHeight();
+        Pane sized = new Pane(logo);
+        sized.setPrefSize(visualWidth, visualHeight);
+        sized.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        sized.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        return sized;
+    }
 }

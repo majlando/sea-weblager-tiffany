@@ -8,9 +8,13 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * In-memory implementation of {@link UserDAO} with two hard-coded test users.
- * Useful while the real database isn't ready yet — the rest of the app can
- * still be developed and tested against this mock.
+ * Sprint 1 — in-memory stand-in for the real database.
+ *
+ * Two hard-coded users live in an ArrayList, so the rest of the app
+ * (login, admin CRUD, etc.) can be built and tested without waiting for the database.
+ *
+ * This class will be replaced with a database-backed UserDAO
+ * (MS SQL Server) and store password hashes.
  */
 public class MockUserDAO implements UserDAO {
 

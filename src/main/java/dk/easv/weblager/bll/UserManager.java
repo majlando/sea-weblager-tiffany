@@ -24,30 +24,21 @@ public class UserManager {
 
     private final UserDAO dao;
 
-    /** Constructor injection — tests and main wiring decide which DAO to use. */
     public UserManager(UserDAO dao) {
         this.dao = dao;
     }
 
-    // ── Authentication ──────────────────────────────────────────────────
+    // Authentication
+    /**
+     * Looks up the user with this username and password.
+     */
     public Optional<User> authenticate(String username, String password) {
         return dao.authenticate(
                 username == null ? "" : username.trim(),
                 password == null ? "" : password);
     }
 
-    // ── Read ────────────────────────────────────────────────────────────
-    public List<User> getAllUsers() {
-        return dao.getAllUsers();
-    }
-
-    public long countAdmins() {
-        return dao.getAllUsers().stream()
-                .filter(u -> u.getRole() == Role.ADMIN)
-                .count();
-    }
-
-    // ── Create ──────────────────────────────────────────────────────────
+    // Create
     public User createUser(String username, String password, Role role) {
         String cleanUsername = requireNonBlank(username, "Username is required.");
         String cleanPassword = requireNonBlank(password, "Password is required.");
@@ -60,7 +51,18 @@ public class UserManager {
         return dao.createUser(new User(0, cleanUsername, cleanPassword, role));
     }
 
-    // ── Update ──────────────────────────────────────────────────────────
+    // Read
+    public List<User> getAllUsers() {
+        return dao.getAllUsers();
+    }
+
+    public long countAdmins() {
+        return dao.getAllUsers().stream()
+                .filter(u -> u.getRole() == Role.ADMIN)
+                .count();
+    }
+
+    // Update
     public User updateUser(User edited) {
         if (edited == null) throw new UserManagementException("No user selected.");
 
@@ -79,7 +81,7 @@ public class UserManager {
         return dao.updateUser(edited);
     }
 
-    // ── Delete ──────────────────────────────────────────────────────────
+    // Delete
     public void deleteUser(User target, User currentUser) {
         if (target == null) throw new UserManagementException("No user selected.");
         if (currentUser != null && currentUser.getId() == target.getId()) {
@@ -91,7 +93,7 @@ public class UserManager {
         dao.deleteUser(target);
     }
 
-    // ── Helpers ─────────────────────────────────────────────────────────
+    // Helpers
     private static String requireNonBlank(String value, String message) {
         if (value == null || value.trim().isEmpty()) {
             throw new UserManagementException(message);

@@ -8,9 +8,7 @@ import javafx.scene.transform.Scale;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,19 +16,23 @@ import java.util.regex.Pattern;
  * A single-color SVG icon loaded from /dk/easv/weblager/gui/assets/icons/{name}.svg.
  * Meant to be used from FXML like:
  *   <SvgIcon iconLiteral="user" iconSize="14"/>
- *
- * The color comes from the CSS class ".icon-fill" so the same icon can look
- * different inside a light button vs. a dark one.
  */
 public class SvgIcon extends Region {
 
     private static final double VIEWBOX = 24.0;
 
-    /** Matches the "d" attribute of each <path> element in the SVG. */
-    private static final Pattern PATH_D = Pattern.compile("<path\\b[^>]*\\bd=\"([^\"]+)\"");
-
-    /** Cache so we don't re-read the same SVG file from disk every time. */
-    private static final Map<String, List<String>> CACHE = new HashMap<>();
+    /*
+     * Extracts the draw-commands from <path d="..."> elements in an SVG file.
+     *
+     *   <path        – matches the opening of a <path> element
+     *   [^>]*        – skips over any other attributes (e.g. fill, class)
+     *   ·d="         – the space before 'd' ensures we match the 'd' attribute
+     *                   and not a different attribute that ends in 'd' (like 'id')
+     *   ([^"]+)      – captures everything inside the quotes (the actual drawing
+     *                   instructions such as "M12 2C6.48 2 2 6.48 2 12s...")
+     *   "            – matches the closing quote
+     */
+    private static final Pattern PATH_D = Pattern.compile("<path[^>]* d=\"([^\"]+)\"");
 
     private final Group content = new Group();
     private final Scale scale = new Scale(1, 1);
@@ -62,7 +64,7 @@ public class SvgIcon extends Region {
         content.getChildren().clear();
         if (iconLiteral == null || iconLiteral.isEmpty()) return;
 
-        for (String d : CACHE.computeIfAbsent(iconLiteral, SvgIcon::loadPaths)) {
+        for (String d : loadPaths(iconLiteral)) {
             SVGPath path = new SVGPath();
             path.setContent(d);
             path.getStyleClass().add("icon-fill");

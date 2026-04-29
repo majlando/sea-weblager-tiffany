@@ -2,10 +2,7 @@ package dk.easv.weblager;
 
 import javafx.application.Application;
 
-/**
- * Some IDEs refuse to run a class that extends {@link Application} directly.
- * This wrapper gives them a plain main method to launch from.
- */
+/** Plain main-method wrapper so IDEs that won't run an Application class directly can still launch the app. */
 public class Launcher {
     public static void main(String[] args) {
         Application.launch(Main.class, args);

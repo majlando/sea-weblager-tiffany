@@ -1,6 +1,5 @@
 package dk.easv.weblager.util;
 
-import dk.easv.weblager.gui.Stylesheets;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -9,8 +8,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * Small helper that loads an FXML file, applies the app stylesheet,
- * and puts it on the given stage.
+ * Small helper that loads an FXML file and puts it on the given stage.
+ * Each FXML declares its own stylesheet, so styling travels with the view.
  */
 public final class SceneSwitcher {
 
@@ -22,9 +21,7 @@ public final class SceneSwitcher {
 
         Scene scene = stage.getScene();
         if (scene == null) {
-            scene = new Scene(root);
-            scene.getStylesheets().add(Stylesheets.main());
-            stage.setScene(scene);
+            stage.setScene(new Scene(root));
         } else {
             scene.setRoot(root);
         }
