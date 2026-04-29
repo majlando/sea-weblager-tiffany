@@ -1,27 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import dk.easv.weblager.gui.control.SvgIcon?>
 
-<VBox prefWidth="900" prefHeight="600" minWidth="700" minHeight="480"
-      spacing="16" styleClass="root-pane"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="dk.easv.weblager.gui.ScanningDashboardController">
-    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+<BorderPane prefWidth="1000" prefHeight="640" minWidth="800" minHeight="500"
+            styleClass="root-pane"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="dk.easv.weblager.gui.controller.ScanningDashboardController">
 
-    <HBox alignment="CENTER_LEFT" spacing="12">
-        <Label styleClass="h1" text="Scanning Dashboard"/>
-        <Region HBox.hgrow="ALWAYS"/>
-        <Label styleClass="body-muted" text="Welcome"/>
-        <Button styleClass="secondary-button" text="Logout" contentDisplay="LEFT" graphicTextGap="8">
-            <graphic>
-                <SvgIcon iconLiteral="sign-out" iconSize="14"/>
-            </graphic>
-        </Button>
-    </HBox>
-</VBox>
+    <stylesheets>
+        <URL value="@styles.css"/>
+    </stylesheets>
+
+    <!-- Header -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="app-header">
+            <padding><Insets top="12" right="18" bottom="12" left="18"/></padding>
+
+            <Pane fx:id="logoContainer" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="28"/>
+            <Label styleClass="h2" text="Scanning Dashboard"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="welcomeLabel" styleClass="body-muted"/>
+            <Button onAction="#onLogout" styleClass="secondary-button" text="Logout"
+                    contentDisplay="LEFT" graphicTextGap="6">
+                <graphic><SvgIcon iconLiteral="sign-out" iconSize="14"/></graphic>
+            </Button>
+        </HBox>
+    </top>
+
+    <!-- Body: sidebar | preview -->
+    <center>
+        <SplitPane dividerPositions="0.25">
+            <padding><Insets top="15" right="24" bottom="15" left="24"/></padding>
+
+            <!-- Sidebar: Load button + ListView of TIFF files -->
+            <VBox spacing="9" minWidth="200" SplitPane.resizableWithParent="false">
+                <Button maxWidth="Infinity" onAction="#onLoadFiles"
+                        styleClass="primary-button" text="Load TIFF files"/>
+                <Label fx:id="fileCountLabel" styleClass="body-muted" text="No files loaded."/>
+                <ListView fx:id="fileList" VBox.vgrow="ALWAYS"/>
+                <Label fx:id="statusLabel" styleClass="error-label"
+                       managed="false" visible="false" wrapText="true"/>
+            </VBox>
+
+            <!-- Preview: placeholder when empty, otherwise the decoded TIFF image -->
+            <StackPane fx:id="previewContainer" minWidth="0" minHeight="0">
+                <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
+                <Label fx:id="placeholderLabel" styleClass="body-muted"
+                       text="Select a file from the list to preview it."/>
+                <ImageView fx:id="previewView" preserveRatio="true" smooth="true"/>
+            </StackPane>
+        </SplitPane>
+    </center>
+</BorderPane>

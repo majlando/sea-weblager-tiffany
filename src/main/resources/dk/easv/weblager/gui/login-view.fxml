@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -11,24 +12,28 @@
 <?import javafx.scene.layout.VBox?>
 <?import dk.easv.weblager.gui.control.SvgIcon?>
 
-<!-- rootPane sits in the center of the window; the inner VBox is the login card. -->
 <StackPane prefWidth="460" prefHeight="560" minWidth="380" minHeight="520"
            styleClass="root-pane"
            xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="dk.easv.weblager.gui.LoginController">
+           fx:controller="dk.easv.weblager.gui.controller.LoginController">
+
+    <stylesheets>
+        <URL value="@styles.css"/>
+    </stylesheets>
 
     <VBox maxWidth="360" maxHeight="-Infinity" spacing="18" styleClass="login-card">
-        <padding><Insets top="28" right="28" bottom="28" left="28"/></padding>
+        <padding><Insets top="27" right="27" bottom="27" left="27"/></padding>
 
         <!-- Logo -->
         <Pane fx:id="logoContainer" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50"/>
 
+        <Label styleClass="h1" text="Tiffany"/>
         <Label styleClass="body-muted" text="Sign in to your account"/>
 
         <!-- Username -->
-        <VBox spacing="6">
+        <VBox spacing="9">
             <Label styleClass="field-label" text="Username"/>
-            <HBox alignment="CENTER_LEFT" spacing="8" styleClass="input-wrapper">
+            <HBox alignment="CENTER_LEFT" spacing="9" styleClass="input-wrapper">
                 <SvgIcon iconLiteral="user" iconSize="14" styleClass="input-icon"/>
                 <TextField fx:id="usernameField" promptText="Username"
                            styleClass="input-inner" HBox.hgrow="ALWAYS"/>
@@ -36,20 +41,20 @@
         </VBox>
 
         <!-- Password -->
-        <VBox spacing="6">
+        <VBox spacing="9">
             <Label styleClass="field-label" text="Password"/>
-            <HBox alignment="CENTER_LEFT" spacing="8" styleClass="input-wrapper">
+            <HBox alignment="CENTER_LEFT" spacing="9" styleClass="input-wrapper">
                 <SvgIcon iconLiteral="lock" iconSize="14" styleClass="input-icon"/>
                 <PasswordField fx:id="passwordField" promptText="Password"
                                styleClass="input-inner" HBox.hgrow="ALWAYS"/>
             </HBox>
         </VBox>
 
-        <Label fx:id="errorLabel" styleClass="error-label" wrapText="true"/>
+        <Label fx:id="errorLabel" styleClass="error-label" minHeight="15" wrapText="true"/>
 
         <!-- Login button with sign-in icon -->
         <Button defaultButton="true" maxWidth="Infinity" onAction="#onLogin"
-                styleClass="primary-button" text="Login" contentDisplay="LEFT" graphicTextGap="8">
+                styleClass="primary-button" text="Login" contentDisplay="LEFT" graphicTextGap="6">
             <graphic>
                 <SvgIcon iconLiteral="sign-in" iconSize="14"/>
             </graphic>

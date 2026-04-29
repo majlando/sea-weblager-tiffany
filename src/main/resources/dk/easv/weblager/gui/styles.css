@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Weblager — Style guide
+   Tiffany — built on the WebLager design system
    Single stylesheet: tokens, typography, reusable components.
    ========================================================================== */
 
@@ -8,8 +8,11 @@
    -------------------------------------------------------------------------- */
 .root-pane {
     -color-primary: #2D3D4F;
-    -color-primary-hover: #3D4F63;
+    -color-primary-hover: #1C252F;
     -color-primary-pressed: #1E2B39;
+
+    -color-secondary: #64748B;
+    -color-secondary-hover: #354556;
 
     -color-destructive: #EF4444;
     -color-destructive-hover: #F26363;
@@ -18,9 +21,10 @@
     -color-border-strong: #C5C8CE;
     -color-bg: #F5F5F5;
     -color-surface: #FFFFFF;
-    -color-surface-muted: #FAFAFA;
+    -color-surface-muted: #F9F9F9;
+    -color-surface-hover: #F1F5F9;
 
-    -color-text: #1F2937;
+    -color-text: #2D3D4F;
     -color-muted: #6B7280;
     -color-placeholder: #BFBFBF;
     -color-on-brand: #FFFFFF;
@@ -49,6 +53,13 @@
     -fx-text-fill: -color-text;
 }
 
+.h3 {
+    -fx-font-family: "Montserrat SemiBold", "Montserrat", sans-serif;
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+    -fx-text-fill: -color-text;
+}
+
 .body-muted  { -fx-text-fill: -color-muted; }
 .field-label {
     -fx-font-family: "Montserrat Medium", "Montserrat", sans-serif;
@@ -68,7 +79,9 @@
 .icon-fill                      { -fx-fill: -color-text; }
 .input-icon .icon-fill          { -fx-fill: -color-muted; }
 .primary-button .icon-fill      { -fx-fill: -color-on-brand; }
-.secondary-button .icon-fill    { -fx-fill: -color-primary; }
+.secondary-button .icon-fill    { -fx-fill: -color-on-brand; }
+.outline-button .icon-fill      { -fx-fill: -color-primary; }
+.destructive-button .icon-fill  { -fx-fill: -color-on-brand; }
 
 /* --------------------------------------------------------------------------
    Cards — used by the login card and dashboard panels
@@ -80,7 +93,7 @@
     -fx-border-color: -color-border;
     -fx-border-radius: 10;
     -fx-border-width: 1;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 12, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 12, 0, 0, 2);
 }
 
 /* --------------------------------------------------------------------------
@@ -102,13 +115,15 @@
     -fx-border-radius: 6;
     -fx-border-width: 1;
     -fx-padding: 0 9 0 9;
-    -fx-pref-height: 32px;
-    -fx-min-height: 32px;
-    -fx-max-height: 32px;
+    -fx-pref-height: 30px;
+    -fx-min-height: 30px;
+    -fx-max-height: 30px;
 }
 
-.input-wrapper:hover   { -fx-border-color: -color-border-strong; }
-.input-wrapper:focused { -fx-border-color: -color-primary; }
+.input-wrapper:hover           { -fx-border-color: -color-border-strong; }
+.input-wrapper:contains-focus  { -fx-border-color: -color-primary; }
+.input-wrapper-error           { -fx-border-color: -color-error; }
+.input-wrapper-success         { -fx-border-color: #4CD07D; }
 
 .input-inner {
     -fx-background-color: transparent;
@@ -129,16 +144,17 @@
    -------------------------------------------------------------------------- */
 .primary-button,
 .secondary-button,
+.outline-button,
 .destructive-button {
     -fx-font-family: "Montserrat Medium", "Montserrat", sans-serif;
     -fx-font-size: 12px;
     -fx-font-weight: 500;
-    -fx-pref-height: 32px;
-    -fx-min-height: 32px;
+    -fx-pref-height: 30px;
+    -fx-min-height: 30px;
     -fx-background-radius: 6;
     -fx-border-radius: 6;
     -fx-cursor: hand;
-    -fx-padding: 0 16 0 16;
+    -fx-padding: 0 9 0 9;
 }
 
 .primary-button {
@@ -150,13 +166,21 @@
 .primary-button:pressed { -fx-background-color: -color-primary-pressed; }
 
 .secondary-button {
+    -fx-background-color: -color-secondary;
+    -fx-text-fill: -color-on-brand;
+    -fx-border-color: transparent;
+}
+.secondary-button:hover   { -fx-background-color: -color-secondary-hover; }
+.secondary-button:pressed { -fx-background-color: -color-secondary-hover; }
+
+.outline-button {
     -fx-background-color: -color-surface;
     -fx-text-fill: -color-primary;
     -fx-border-color: -color-border;
     -fx-border-width: 1;
 }
-.secondary-button:hover  { -fx-background-color: -color-surface-muted; -fx-border-color: -color-border-strong; }
-.secondary-button:pressed { -fx-background-color: -color-bg; }
+.outline-button:hover   { -fx-background-color: -color-surface-muted; -fx-border-color: -color-border-strong; }
+.outline-button:pressed { -fx-background-color: -color-bg; }
 
 .destructive-button {
     -fx-background-color: -color-destructive;
@@ -192,8 +216,8 @@
    Feedback label — green = success
    -------------------------------------------------------------------------- */
 .success-label {
-    -fx-font-size: 11px;
-    -fx-text-fill: #2A7F42;
+    -fx-font-size: 10px;
+    -fx-text-fill: #4CD07D;
 }
 
 /* --------------------------------------------------------------------------
@@ -210,6 +234,8 @@
 .table-view .column-header-background {
     -fx-background-color: -color-surface-muted;
     -fx-background-radius: 6 6 0 0;
+    -fx-border-color: transparent transparent -color-border transparent;
+    -fx-border-width: 0 0 1 0;
 }
 
 .table-view .column-header,
@@ -244,12 +270,131 @@
     -fx-border-width: 1;
     -fx-background-radius: 6;
     -fx-border-radius: 6;
-    -fx-pref-height: 32px;
+    -fx-pref-height: 30px;
+    -fx-min-height: 30px;
 }
 .combo-box:hover   { -fx-border-color: -color-border-strong; }
 .combo-box:focused { -fx-border-color: -color-primary; }
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+}
+.combo-box .arrow {
+    -fx-background-color: -color-muted;
+}
 .combo-box .list-cell {
     -fx-text-fill: -color-text;
     -fx-background-color: transparent;
     -fx-padding: 0 8 0 8;
+}
+
+/* --------------------------------------------------------------------------
+   ComboBox popup — dropdown list
+   -------------------------------------------------------------------------- */
+.combo-box-popup > .list-view {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 4 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 8, 0, 0, 2);
+}
+.combo-box-popup > .list-view .list-cell {
+    -fx-text-fill: -color-text;
+    -fx-background-color: transparent;
+    -fx-padding: 6 10;
+}
+.combo-box-popup > .list-view .list-cell:hover {
+    -fx-background-color: -color-surface-hover;
+}
+.combo-box-popup > .list-view .list-cell:filled:selected {
+    -fx-background-color: -color-primary;
+    -fx-text-fill: -color-on-brand;
+}
+
+/* --------------------------------------------------------------------------
+   ListView — file list (scanning dashboard)
+   -------------------------------------------------------------------------- */
+.list-view {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border;
+    -fx-border-width: 1;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-padding: 1;
+}
+.list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -color-text;
+    -fx-padding: 8 12;
+}
+.list-view .list-cell:filled:hover {
+    -fx-background-color: -color-surface-hover;
+}
+.list-view .list-cell:filled:selected {
+    -fx-background-color: -color-primary;
+    -fx-text-fill: -color-on-brand;
+}
+
+/* --------------------------------------------------------------------------
+   SplitPane — thin divider
+   -------------------------------------------------------------------------- */
+.split-pane > .split-pane-divider {
+    -fx-background-color: -color-border;
+    -fx-padding: 0 0.5 0 0.5;
+}
+
+/* --------------------------------------------------------------------------
+   TableView — hover state, cell padding
+   -------------------------------------------------------------------------- */
+.table-view .table-cell {
+    -fx-padding: 6 8;
+}
+.table-view .table-row-cell:filled:hover {
+    -fx-background-color: -color-surface-hover;
+}
+.table-view .table-row-cell:filled:selected,
+.table-view .table-row-cell:filled:selected:hover {
+    -fx-background-color: -color-primary;
+}
+
+/* --------------------------------------------------------------------------
+   Disabled buttons
+   -------------------------------------------------------------------------- */
+.primary-button:disabled,
+.secondary-button:disabled,
+.outline-button:disabled,
+.destructive-button:disabled {
+    -fx-opacity: 0.6;
+    -fx-cursor: default;
+}
+
+/* --------------------------------------------------------------------------
+   Scroll bars — minimal rounded thumb, no arrows
+   -------------------------------------------------------------------------- */
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+.scroll-bar .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.scroll-bar .thumb {
+    -fx-background-color: -color-border-strong;
+    -fx-background-radius: 4;
+    -fx-background-insets: 2;
+}
+.scroll-bar .thumb:hover {
+    -fx-background-color: -color-muted;
+}
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-shape: "";
+    -fx-padding: 0;
 }
