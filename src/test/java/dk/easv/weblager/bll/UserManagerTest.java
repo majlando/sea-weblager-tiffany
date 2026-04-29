@@ -47,6 +47,19 @@ class UserManagerTest {
         assertTrue(manager.authenticate("admin", "wrong").isEmpty());
     }
 
+    // Whitespace around the typed username is forgiven; whitespace in the
+    // password is not (passwords are taken literally).
+    @Test
+    void authenticateTrimsUsername() {
+        assertTrue(manager.authenticate("  admin  ", "admin1234").isPresent());
+    }
+
+    // Null inputs become empty strings inside UserManager, which match nobody.
+    @Test
+    void authenticateNullInputs() {
+        assertTrue(manager.authenticate(null, null).isEmpty());
+    }
+
     @Test
     void createValid() {
         User created = manager.createUser("alice", "secret123", Role.OPERATOR);
@@ -60,6 +73,12 @@ class UserManagerTest {
                 () -> manager.createUser("  ", "secret123", Role.OPERATOR));
     }
 
+    @Test
+    void createBlankPassword() {
+        assertThrows(UserManagementException.class,
+                () -> manager.createUser("alice", "  ", Role.OPERATOR));
+    }
+
     // Usernames are case-insensitive, so "ADMIN" clashes with the seeded "admin".
     @Test
     void createDuplicate() {
@@ -67,7 +86,39 @@ class UserManagerTest {
                 () -> manager.createUser("ADMIN", "secret123", Role.OPERATOR));
     }
 
-    // deleteUser(target, currentUser) — second arg is the logged-in user.
+    @Test
+    void updateValid() {
+        operator.setUsername("operator-renamed");
+        User saved = manager.updateUser(operator);
+        assertEquals("operator-renamed", saved.getUsername());
+    }
+
+    // Renaming the operator to "admin" would collide with the seeded admin.
+    @Test
+    void updateDuplicateUsername() {
+        operator.setUsername("admin");
+        assertThrows(UserManagementException.class, () -> manager.updateUser(operator));
+    }
+
+    @Test
+    void updateBlankUsername() {
+        operator.setUsername("   ");
+        assertThrows(UserManagementException.class, () -> manager.updateUser(operator));
+    }
+
+    @Test
+    void updateNull() {
+        assertThrows(UserManagementException.class, () -> manager.updateUser(null));
+    }
+
+    @Test
+    void countAdmins() {
+        assertEquals(1, manager.countAdmins());
+        manager.createUser("alice", "secret123", Role.ADMIN);
+        assertEquals(2, manager.countAdmins());
+    }
+
+    // deleteUser(target, currentUser)
     @Test
     void deleteSelf() {
         assertThrows(UserManagementException.class,
